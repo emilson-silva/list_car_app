@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:list_car_app/controller/car_controller.dart';
 import 'package:list_car_app/model/car_model.dart';
+import 'package:list_car_app/shared/utils/assets.dart';
 
 class CarDetailsView extends StatelessWidget {
   final Car car;
@@ -11,6 +12,9 @@ class CarDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     // Aqui você obtém a URI do asset baseado no campo do modelo Car
+    final String carAssetUri = CarAssets.values[car.id % CarAssets.values.length].localUri;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('${car.nomeModelo} ${car.nomeModelo}'),
@@ -20,7 +24,9 @@ class CarDetailsView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Id: ${car.nomeModelo}', style: const TextStyle(fontSize: 18)),
+            // Exibindo a imagem do carro
+            Image.asset(carAssetUri, height: 200), // Ajuste a altura conforme necessário
+            Text('Modelo: ${car.nomeModelo}', style: const TextStyle(fontSize: 18)),
             Text('Preço: R\$ ${car.valor}', style: const TextStyle(fontSize: 18)),
             Text('Ano: ${car.ano}', style: const TextStyle(fontSize: 18)),
             Text('Combustível: ${car.combustivel}', style: const TextStyle(fontSize: 18)),

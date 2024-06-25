@@ -16,7 +16,6 @@ class _CarListScreenViewState extends State<CarListScreenView> {
   late Future<List<Car>> futureCars;
   final CarController _controller = CarController();
 
-
   @override
   void initState() {
     super.initState();
@@ -25,7 +24,6 @@ class _CarListScreenViewState extends State<CarListScreenView> {
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       appBar: AppBar(
         title: const Text('Carros Disponíveis'),
@@ -42,17 +40,61 @@ class _CarListScreenViewState extends State<CarListScreenView> {
                 int imageIndex = car.id % CarAssets.values.length;
                 // Obtém a URI da imagem
                 String imageUri = CarAssets.values[imageIndex].localUri;
-                return ListTile(
-                  leading: Image.asset(imageUri, width: 50, height: 50), // Exibe a imagem
-                  title: Text('${car.nomeModelo} ${car.nomeModelo}'),
-                  subtitle: Text('Ano: ${car.ano}, Combustível: ${car.combustivel}'),
-                  trailing: Text('R\$ ${car.valor}'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CarDetailsView(car: car)),
-                    );
-                  },
+                return Container(
+                  padding: const EdgeInsets.all(
+                      8.0), // Adiciona um padding ao redor do container
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CarDetailsView(car: car),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(
+                          8.0), // Adiciona um padding ao redor do container
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            imageUri,
+                            width: 50,
+                            height: 50,
+                          ), // Exibe a imagem
+                          const SizedBox(
+                              width: 10), // Espaço entre a imagem e o texto
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment
+                                  .start, // Alinha os textos à esquerda
+                              children: [
+                                Text('${car.nomeModelo} ${car.nomeModelo}',
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
+                                Text(
+                                    'Ano: ${car.ano}, Combustível: ${car.combustivel}'),
+                              ],
+                            ),
+                          ),
+                          Text('R\$ ${car.valor}'),
+                        ],
+                      ),
+                    ),
+                  ),
                 );
               },
             );
