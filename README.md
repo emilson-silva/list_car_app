@@ -46,15 +46,7 @@ Implementar uma classe `DatabaseHelper` para operações CRUD no SQLite.
 ### Justificativa
 Melhora a organização do código e facilita a manutenção das operações de banco de dados.
 
-## 6. Testes Automatizados
-
-### Decisão
-Incluir testes unitários e de integração.
-
-### Justificativa
-Os testes garantem que o código funcione conforme o esperado e ajudam a prevenir regressões futuras.
-
-## 7. Uso de Pacotes de Terceiros
+## 6. Uso de Pacotes de Terceiros
 
 ### Decisão
 Incluir pacotes como `sqflite`, `http`, e `path_provider`.
@@ -64,7 +56,7 @@ Incluir pacotes como `sqflite`, `http`, e `path_provider`.
 - **http**: Simplifica a realização de requisições HTTP.
 - **path_provider**: Ajuda a encontrar diretórios no sistema de arquivos.
 
-## 8. Implementação da Interface do Usuário
+## 7. Implementação da Interface do Usuário
 
 ### Decisão
 Desenvolver uma interface de usuário simples e intuitiva com Flutter.
