@@ -23,7 +23,7 @@ class _CarDetailsViewState extends State<CarDetailsView> {
     _controllerTextField.addListener(_validateInput);
   }
 
- @override
+  @override
   void dispose() {
     _controllerTextField.removeListener(_validateInput);
     _controllerTextField.dispose();
@@ -46,8 +46,13 @@ class _CarDetailsViewState extends State<CarDetailsView> {
         CarAssets.values[widget.car.id % CarAssets.values.length].localUri;
 
     return Scaffold(
+      backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
-        title: Text('${widget.car.nomeModelo} ${widget.car.nomeModelo}'),
+        backgroundColor: Colors.blueGrey[50],
+        title: Text(
+          '${widget.car.nomeModelo} ${widget.car.ano}',
+          textAlign: TextAlign.center,
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -116,21 +121,23 @@ class _CarDetailsViewState extends State<CarDetailsView> {
                   ),
                   const SizedBox(height: 20),
                   ValueListenableBuilder<bool>(
-                valueListenable: _isInputValid,
-                builder: (context, isInputValid, child) {
-                  return ElevatedButton(
-                    onPressed: isInputValid
-                        ? () {
-                            _controller.saveLead(widget.car.id, _controllerTextField.text);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Lead salvo com sucesso!')),
-                            );
-                          }
-                        : null,
-                    child: const Text('Eu Quero'),
-                  );
-                },
-              ),
+                    valueListenable: _isInputValid,
+                    builder: (context, isInputValid, child) {
+                      return ElevatedButton(
+                        onPressed: isInputValid
+                            ? () {
+                                _controller.saveLead(
+                                    widget.car.id, _controllerTextField.text);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Lead salvo com sucesso!')),
+                                );
+                              }
+                            : null,
+                        child: const Text('Eu Quero'),
+                      );
+                    },
+                  ),
                 ],
               ),
             ],
