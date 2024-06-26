@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart' ;
+// ignore: depend_on_referenced_packages
+import 'package:path/path.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -28,13 +29,18 @@ class DatabaseHelper {
     );
   }
 
-  Future<void> insertLead(int carId, String userInfo) async {
-    final db = await database;
-    await db.insert(
-      'leads',
-      {'carId': carId, 'userInfo': userInfo},
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+  Future<bool> insertLead(int carId, String userInfo) async {
+    try {
+      final db = await database;
+      await db.insert(
+        'leads',
+        {'carId': carId, 'userInfo': userInfo},
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      return true; // Retornando true em caso de sucesso
+    } catch (e) {
+      return false; // Retornando false em caso de falha
+    }
   }
 
   Future<List<Map<String, dynamic>>> getLeads() async {
