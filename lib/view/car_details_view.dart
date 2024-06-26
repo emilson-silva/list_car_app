@@ -3,22 +3,51 @@ import 'package:list_car_app/controller/car_controller.dart';
 import 'package:list_car_app/model/car_model.dart';
 import 'package:list_car_app/shared/utils/assets.dart';
 
-class CarDetailsView extends StatelessWidget {
+class CarDetailsView extends StatefulWidget {
   final Car car;
+
+  const CarDetailsView({super.key, required this.car});
+
+  @override
+  State<CarDetailsView> createState() => _CarDetailsViewState();
+}
+
+class _CarDetailsViewState extends State<CarDetailsView> {
   final CarController _controller = CarController();
   final TextEditingController _controllerTextField = TextEditingController();
+  final ValueNotifier<bool> _isInputValid = ValueNotifier(false);
 
-  CarDetailsView({super.key, required this.car});
+  @override
+  void initState() {
+    super.initState();
+    _controllerTextField.addListener(_validateInput);
+  }
+
+ @override
+  void dispose() {
+    _controllerTextField.removeListener(_validateInput);
+    _controllerTextField.dispose();
+    _isInputValid.dispose();
+    super.dispose();
+  }
+
+  void _validateInput() {
+    final input = _controllerTextField.text;
+    final isEmailValid =
+        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input);
+    final isPhoneValid = RegExp(r'^(?:[+0]9)?[0-9]{11}$').hasMatch(input);
+    _isInputValid.value = isEmailValid || isPhoneValid;
+  }
 
   @override
   Widget build(BuildContext context) {
     // Aqui você obtém a URI do asset baseado no campo do modelo Car
     final String carAssetUri =
-        CarAssets.values[car.id % CarAssets.values.length].localUri;
+        CarAssets.values[widget.car.id % CarAssets.values.length].localUri;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${car.nomeModelo} ${car.nomeModelo}'),
+        title: Text('${widget.car.nomeModelo} ${widget.car.nomeModelo}'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -51,25 +80,25 @@ class CarDetailsView extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Modelo: ${car.nomeModelo}',
+                          Text('Modelo: ${widget.car.nomeModelo}',
                               style: const TextStyle(fontSize: 18)),
-                          Text('Preço: R\$ ${car.valor}',
+                          Text('Preço: R\$ ${widget.car.valor}',
                               style: const TextStyle(fontSize: 18)),
-                          Text('Ano: ${car.ano}',
+                          Text('Ano: ${widget.car.ano}',
                               style: const TextStyle(fontSize: 18)),
-                          Text('Combustível: ${car.combustivel}',
+                          Text('Combustível: ${widget.car.combustivel}',
                               style: const TextStyle(fontSize: 18)),
-                          Text('Portas: ${car.numPortas}',
+                          Text('Portas: ${widget.car.numPortas}',
                               style: const TextStyle(fontSize: 18)),
-                          Text('Cor: ${car.cor}',
+                          Text('Cor: ${widget.car.cor}',
                               style: const TextStyle(fontSize: 18)),
                         ],
                       ),
                     ),
-                   
                   ],
                 ),
-              ), const SizedBox(height: 40),
+              ),
+              const SizedBox(height: 40),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -86,16 +115,22 @@ class CarDetailsView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      _controller.saveLead(car.id, _controllerTextField.text);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Lead salvo com sucesso!')),
-                      );
-                    },
+                  ValueListenableBuilder<bool>(
+                valueListenable: _isInputValid,
+                builder: (context, isInputValid, child) {
+                  return ElevatedButton(
+                    onPressed: isInputValid
+                        ? () {
+                            _controller.saveLead(widget.car.id, _controllerTextField.text);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Lead salvo com sucesso!')),
+                            );
+                          }
+                        : null,
                     child: const Text('Eu Quero'),
-                  ),
+                  );
+                },
+              ),
                 ],
               ),
             ],
