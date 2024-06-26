@@ -25,7 +25,9 @@ class _CarListScreenViewState extends State<CarListScreenView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
+          backgroundColor: Colors.blueGrey[50],
         title: const Text('Carros Disponíveis'),
       ),
       body: FutureBuilder<List<Car>>(
@@ -81,7 +83,7 @@ class _CarListScreenViewState extends State<CarListScreenView> {
                               crossAxisAlignment: CrossAxisAlignment
                                   .start, // Alinha os textos à esquerda
                               children: [
-                                Text('${car.nomeModelo} ${car.nomeModelo}',
+                                Text('${car.nomeModelo} ${car.ano}',
                                     style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold)),
