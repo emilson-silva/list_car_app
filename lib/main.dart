@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:list_car_app/controller/car_controller.dart';
 import 'package:list_car_app/view/car_list_screen_view.dart';
 
-
 void main() {
   runApp(const MyApp());
-    Timer.periodic(const Duration(hours: 1), (Timer t) => CarController().sendLeads());
-
+  Timer.periodic(
+      const Duration(hours: 1), (Timer t) => CarController().sendLeads());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,13 +17,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:const  CarListScreenView(),
+      home: const CarListScreenView(),
     );
   }
 }
-
